@@ -1,67 +1,147 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-header {
-    width: 100%;
-    background: midnightblue;
+    background: #eee;
+    font-family: Segoe UI, sans-serif;
 }
 
 h1 {
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    color: #fff;
+    text-indent: 1em;
+}
+
+ul {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+li {
+    list-style-type: none;
+    font-size: 1em;
+    padding: .5em 1em;
+    border: 1px solid #eee;
+}
+
+li:hover {
+    border: 1px solid #333;
+    border-radius: 2em;
+    transition: .25s;
+}
+
+main {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+a {
+    display: block;
+    text-decoration: none;
+    color: #222;
+    background: #eee;
+    margin: 8px;
+    box-shadow: 2px 2px 2px 2px #bbb;
+    width: 300px;
+    max-width: 100vw;
+    height: 300px;
+}
+
+a:hover {
+    background: #dedede;
+    transition: .2s;
+}
+
+work {
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+}
+
+capture {
+    display: block;
+}
+
+capture.none {
+    background: #aaa;
+    width: 300px;
+    height: 150px;
+}
+
+explain {
+    display: block;
+    width: 300px;
+    max-width: 80vw;
+    padding: 8px;
+}
+
+sitename {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+siteinfo {
+    display: block;
+    font-weight: 100;
+}
+
+siteurl {
+    display: block;
+    font-weight: normal;
+    font-size: 90%;
+}
+
+sitetag {
+    display: flex;
+}
+
+cat {
+    display: block;
+    background: #eee;
+    border-radius: 1em;
+    padding: 4px 8px;
 }
 
 footer {
     text-align: center;
-    background: #666;
-    color: #fff;
-    font-size: 66%;
-    height: 2em;
-    width: 100%;
+    margin: 12px;
 }
 
-main {
-    width: 90%;
-    margin: 0 auto;
+#md {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-size: .75em;
 }
 
-main p {
-    padding: .5em 1em;
+body.dark {
+    background: #333;
 }
 
-main h2 {
-    border-left: .5em solid #888;
-    border-radius: .25em;
-    padding-left: 1em;
+.dark h1 {
+    color: #ddd;
 }
 
-main h3 {
-    border-left: .5em solid navy;
-    border-radius: .25em;
-    padding-left: 1em;
-    margin-left: 2em;
+.dark li {
+    border-color: #333;
+    color: #ddd;
 }
 
-main h4 {
-    margin: 0 auto;
-    background: #aaa;
-    padding: .5em;
-    width: 80%;
+.dark li:hover {
+    border-color: #ddd;
 }
 
-main h4 + p {
-    margin: 0 auto;
-    background: #ccc;
-    padding: .5em;
-    width: 80%;
+.dark a {
+    background: #888;
+    box-shadow: none;
 }
 
-main code {
-    display: block;
-    margin: 1em;
+@media screen and (max-width: 900px) {
+    ul {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    work {
+        flex-direction: column;
+    }
 }

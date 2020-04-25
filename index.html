@@ -1,59 +1,941 @@
 <!DOCTYPE html>
 <html lang="ja">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>PowerShellの使い方</title>
-		<link rel="stylesheet" href="ps.css">
-	</head>
-	<body>
-		<header>
-			<h1>PowerShellの使い方</h1>
-		</header>
-		<main>
-			<p>
-				PowerShellはWindows10に付属するアプリ。コマンドプロンプトより高機能なシェルスクリプトを簡単に組める。コマンドプロンプトに代わって利用するユーザーも多くいる。ふつうの「PowerShell」と高機能な「PowerShell&nbsp;ISE」がある。
-			</p>
-			<h2>PowerShellの起動</h2>
-			<h3>コマンドプロンプトから</h3>
-			<p>
-				Winキー+Sで、「cmd」で検索、コマンドプロンプトを動かし、「powershell」と打って実行すると、PowerShellが起動する。
-			</p>
-			<h2>ISEの起動</h2>
-			<p>
-				Winキー+Sで、「ise」で検索、PowerShell&nbsp;ISEが起動する。
-			</p>
-			<h3>PowerShellから</h3>
-			<p>
-				PowerShellで「ise」と打って実行すると、PowerShell&nbsp;ISEが起動する。
-			</p>
-			<h2>PowerShellとは何をするツールか</h2>
-			<p>
-				PowerShellは、コマンドプロンプトの代わりになる、高機能なツール。コマンドを使えるうえ、「コマンドレット」を使っても動く。コマンドとコマンドレットは対応しており、いずれかが欠けることはない。
-			</p>
-			<h4>.exeをコマンドにする方法</h4>
-			<p>
-				コマンドとは、環境変数にパスが通っているフォルダに入っている「.exe」ファイルのファイル名である。例えば、C:\sys\bin\testfile.exeを動かしたければ、C:\sys\binにパスを通して、コマンドプロンプトやPowerShellを再起動し、単に「testfile」と打てばよい。
-			</p>
-			<h3>コマンドレット</h3>
-			<p>
-				コマンドレットは、動詞と名詞がハイフンでつながったコマンド。例えば、「New-Item」。
-				<code>> New-Item test.py</code>
-				とすれば、test.pyという空のファイルができる。このコマンドレットには、「ni」というPowerShellコマンドが対応する。このようなファイルの新規作成ができるコマンドは、コマンドプロンプトにはない。
-			</p>
-			<h4>起動時のパスを変える方法</h4>
-			<p>
-				作業フォルダーは、デフォルトだと「C:\User\username」で始まる。これをコマンドプロンプトもPowerShellも、同様の方法で変更できる。例えば「E:\」に変更したい時。Winキーを押し、スタートメニューの「Windows PowerShell」フォルダにあるショートカットで右クリック、「その他」＞「ファイルの場所を開く」、ショートカットアイコンが収まったフォルダに移動する。アイコンを右クリックし「プロパティ」。「ショートカット」タブの「作業フォルダー」を「E:\」に変更し「適用」。すると、起動時の作業フォルダ－が「E:\」になる。
-			</p>
-			<h2>コマンドアドオン</h2>
-			<p>
-				ISEには、ペインが3つある。左側の上はコマンドファイルを編集する。左側の下はコンソール。そして、右側は「コマンドアドオン」だ。PowerShellコマンドを検索ボックスから自由に検索でき、「実行」も「挿入」も「コピー」も、マウスで自在だ。「挿入」ボタンは押しても実行されないので、スクリプトを作成する際に便利だ。
-			</p>
-			<h3>パラメータボックス</h3>
-			<p>
-				コマンドレットが検索できたら、「詳細の表示」ボタンを押すと、オプションパラメータや共通パラメータも書き込める。オプションはコマンド（レット）の後ろにハイフン付きで指定するが、ISEではこれをGUIで組める。
-			</p>
-		</main>
-		<footer>&copy; 2020</footer>
-	</body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORKS | POTARO WebDev</title>
+    <link rel="stylesheet" href="ps.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152790439-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-152790439-5');
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function(){
+            $('li').click(function(){
+                var clsname = $(this).data('select');
+                $('a').hide()
+                switch(clsname){
+                    case 'web' : $('a.web').fadeIn(200); break;
+                    case 'mands' : $('a.mands').fadeIn(200); break;
+                    case 'prog' : $('a.prog').fadeIn(200); break;
+                    case 'act' : $('a.act').fadeIn(200); break;
+                    case 'lang' : $('a.lang').fadeIn(200); break;
+                    case 'all' : $('a').fadeIn(200); break;
+                    default : $('a:not(clsname)').hide(); $(clsname).fadeIn(100); break;
+                }
+            })
+            $('#md').text('Dark Mode');
+            $('#md').click(function(){
+                $('body').toggleClass('dark');
+                if($(this).text()=='Light Mode'){
+                    $(this).text('Dark Mode').css('color', '#333');
+                } else {
+                    $(this).text('Light Mode').css('color', '#eee');
+                }
+            });
+        })
+    </script>
+
+</head>
+
+<body>
+    <h1>
+        WORKS | POTARO WebDev
+    </h1>
+    <mode>
+        <span id="md"></span>
+    </mode>
+    <nav>
+        <ul>
+            <li data-select="web">
+                WEB
+            </li>
+            <li data-select="mands">
+                MATH&amp;SCIENCE
+            </li>
+            <li data-select="prog">
+                PROGRAMMING
+            </li>
+            <li data-select="act">
+                ACTIVITY
+            </li>
+            <li data-select="lang">
+                LANGUAGE
+            </li>
+            <li data-select="all">
+                ALL
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <a href="https://p.potaro.org" class="web prog act">
+            <work>
+                <capture>
+                    <img src="img/p.png">
+                </capture>
+                <explain>
+                    <sitename>POTARO WebDev</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>p.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>pagePiling</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://tml.potaro.org" class="mands act">
+            <work>
+                <capture>
+                    <img src="img/tml.png">
+                </capture>
+                <explain>
+                    <sitename>髙橋数理研究所</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>tml.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://nichi.potaro.org" class="mands act">
+            <work>
+                <capture>
+                    <img src="img/mth.png">
+                </capture>
+                <explain>
+                    <sitename>NICHI MATH</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>nichi.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://wbdv.potaro.org" class="web prog">
+            <work>
+                <capture>
+                    <img src="img/wbdv.png">
+                </capture>
+                <explain>
+                    <sitename>wbdv [web dev]</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>wbdv.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="http://dgbjdjg.sakura.ne.jp/paso/" class="web act">
+            <work>
+                <capture>
+                    <img src="img/paso.png">
+                </capture>
+                <explain>
+                    <sitename>ボランティア街道</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>dgbjdjg.sakura.ne.jp/paso</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://ushi.potaro.org/" class="lang act">
+            <work>
+                <capture>
+                    <img src="img/ush.png">
+                </capture>
+                <explain>
+                    <sitename>丑読【うしどく】</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>ushi.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://nk.potaro.org/" class="mands">
+            <work>
+                <capture>
+                    <img src="img/nk.png">
+                </capture>
+                <explain>
+                    <sitename>神経の王国</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>nk.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>MaterialDesignLite</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://cook.potaro.org/" class="mands">
+            <work>
+                <capture>
+                    <img src="img/cook.png">
+                </capture>
+                <explain>
+                    <sitename>ある日曜数学者のレシピ</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>cook.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://sql.potaro.org/" class="mands prog">
+            <work>
+                <capture>
+                    <img src="img/sql.png">
+                </capture>
+                <explain>
+                    <sitename>the SQL</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>sql.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="http://graph.2-d.jp" class="web">
+            <work>
+                <capture>
+                    <img src="img/graph.png">
+                </capture>
+                <explain>
+                    <sitename>タカハシグラフ</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>graph.2-d.jp</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://dts.potaro.org" class="web prog">
+            <work>
+                <capture>
+                    <img src="img/dts.png">
+                </capture>
+                <explain>
+                    <sitename>designTips</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>dts.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://disp.potaro.org" class="act mands">
+            <work>
+                <capture>
+                    <img src="img/disp.png">
+                </capture>
+                <explain>
+                    <sitename>Future Display</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>disp.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://stella.potaro.org" class="mands">
+            <work>
+                <capture>
+                    <img src="img/stl.png">
+                </capture>
+                <explain>
+                    <sitename>ステラ</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>stella.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://sqhck.potaro.org" class="mands">
+            <work>
+                <capture>
+                    <img src="img/sqh.png">
+                </capture>
+                <explain>
+                    <sitename>SeqHack</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>sqhck.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://geo.potaro.org" class="mands">
+            <work>
+                <capture>
+                    <img src="img/geo.png">
+                </capture>
+                <explain>
+                    <sitename>GeoNow</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>geo.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="http://potaro.org/zs" class="lang">
+            <work>
+                <capture>
+                    <img src="img/zs.png">
+                </capture>
+                <explain>
+                    <sitename>図通 整理通</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>potaro.org/zs</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://jg.potaro.org" class="prog web">
+            <work>
+                <capture>
+                    <img src="img/jg.png">
+                </capture>
+                <explain>
+                    <sitename>jGadgets</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>jg.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://stack.potaro.org" class="prog">
+            <work>
+                <capture>
+                    <img src="img/stk.png">
+                </capture>
+                <explain>
+                    <sitename>stackoverwork</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>stack.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://tecne.potaro.org" class="mands">
+            <work>
+                <capture>
+                    <img src="img/tec.png">
+                </capture>
+                <explain>
+                    <sitename>Tecneics</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>tecne.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://half.potaro.org/" class="lang">
+            <work>
+                <capture>
+                    <img src="img/half.png">
+                </capture>
+                <explain>
+                    <sitename>半人前翻訳塾</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>half.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://fil.potaro.org" class="lang">
+            <work>
+                <capture>
+                    <img src="img/fil.png">
+                </capture>
+                <explain>
+                    <sitename>フォーリン・ラング</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>fil.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://progeng.potaro.org" class="lang">
+            <work>
+                <capture>
+                    <img src="img/eng.png">
+                </capture>
+                <explain>
+                    <sitename>プログラマのための英文読解術</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>progeng.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://wp.potaro.org" class="prog web">
+            <work>
+                <capture>
+                    <img src="img/wp.png">
+                </capture>
+                <explain>
+                    <sitename>ローカルマシンでつくる<br>WordPress講座</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>wp.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://heisei.potaro.org" class="lang">
+            <work>
+                <capture>
+                    <img src="img/hs.png">
+                </capture>
+                <explain>
+                    <sitename>平成西周</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>heisei.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://kkh.potaro.org" class="lang">
+            <work>
+                <capture>
+                    <img src="img/kkh.png">
+                </capture>
+                <explain>
+                    <sitename>覚杯</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>kkh.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://bbsb.potaro.org" class="lang">
+            <work>
+                <capture>
+                    <img src="img/bbsb.png">
+                </capture>
+                <explain>
+                    <sitename>貧乏新聞</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>bbsb.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://hdgy.potaro.org" class="lang">
+            <work>
+                <capture>
+                    <img src="img/yoko.png">
+                </capture>
+                <explain>
+                    <sitename>YokoNishi</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>hdgy.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://code.potaro.org" class="prog">
+            <work>
+                <capture>
+                    <img src="img/cppp.png">
+                </capture>
+                <explain>
+                    <sitename>コピペパ！</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>code.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://py.potaro.org" class="prog">
+            <work>
+                <capture>
+                    <img src="img/py.png">
+                </capture>
+                <explain>
+                    <sitename>Python Master Guide</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>py.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="http://potaro.org/csw1" class="web">
+            <work>
+                <capture>
+                    <img src="img/csw.png">
+                </capture>
+                <explain>
+                    <sitename>1級ウェブデザイン技能士 合格対策</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>potaro.org/csw1</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://lang0.potaro.org" class="prog">
+            <work>
+                <capture>
+                    <img src="img/lang0.png">
+                </capture>
+                <explain>
+                    <sitename>lang0（ランゴ）</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>lang0.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>Bootstrap</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://ist.potaro.org" class="mands">
+            <work>
+                <capture>
+                    <img src="img/ist.png">
+                </capture>
+                <explain>
+                    <sitename>情報空間論</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>ist.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>HTML5 UP</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="http://potaro.org/ldws" class="prog">
+            <work>
+                <capture>
+                    <img src="img/ldws.png">
+                </capture>
+                <explain>
+                    <sitename>LDWS</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>potaro.org/ldws</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://king.potaro.org" class="mands">
+            <work>
+                <capture>
+                    <img src="img/king.png">
+                </capture>
+                <explain>
+                    <sitename>networKing</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>king.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://nb.potaro.org" class="lang">
+            <work>
+                <capture>
+                    <img src="img/nb.png">
+                </capture>
+                <explain>
+                    <sitename>Notion Boy</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>nb.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://gimp.potaro.org" class="web">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>GIMP マスタークラス</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>gimp.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://master.potaro.org" class="web">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>インターネット入門講義</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>master.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://bunkei.potaro.org" class="prog">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>元文系学生のための<br>ウェブプログラミング講座</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>bunkei.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://design.potaro.org" class="web">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>レイアウトで学ぶ<br>Webデザインの基礎</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>design.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://prog.potaro.org" class="prog">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>小学生も始めている<br>プログラミング入門</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>prog.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://js.potaro.org" class="prog">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>ようこそ、<br>JavaScriptプログラミングの世界。</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>js.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://paper.potaro.org" class="mands">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>PAPER NEXT</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>paper.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://wl.potaro.org" class="mands">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>ワイヤレスワールド</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>wl.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://poly.potaro.org" class="web">
+            <work>
+                <capture class="none">
+                    <img src="img/ply.png">
+                </capture>
+                <explain>
+                    <sitename>ポリサーチ</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>poly.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://slept.potaro.org" class="mands">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>SLEPT</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>slept.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://progart.potaro.org" class="lang">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>PROGART（プロガート）</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>progart.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://score.potaro.org" class="lang">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>スコアガイド</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>score.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://lib.potaro.org" class="lang">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>Libral Liberty</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>lib.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://tokyo.potaro.org" class="mands">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>東京科学入門</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>tokyo.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://kanji.potaro.org/denki/" class="lang">
+            <work>
+                <capture class="none">
+                    <img src="img/knj.png">
+                </capture>
+                <explain>
+                    <sitename>漢字のつくりかた</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>kanji.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://archi.potaro.org" class="lang">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>建築散歩</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>archi.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://jp.potaro.org" class="lang">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>IntroJapan</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>jp.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://os.potaro.org" class="mands">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>OptionStock</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>os.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://drill.potaro.org" class="prog">
+            <work>
+                <capture class="none">
+                    <img src="img/drll.png">
+                </capture>
+                <explain>
+                    <sitename>デザインドリル</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>drill.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>独自</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://laravel.potaro.org" class="prog">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>ららべった？</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>laravel.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://astro.potaro.org" class="mands">
+            <work>
+                <capture class="none">
+                    <!--                    <img src="img/nb.png">-->
+                </capture>
+                <explain>
+                    <sitename>ASTRO NOTES</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>astro.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>制作中</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+        <a href="https://hitori.potaro.org" class="web lang">
+            <work>
+                <capture class="none">
+                    <img src="img/htr.png">
+                </capture>
+                <explain>
+                    <sitename>ひとり大学</sitename>
+                    <siteinfo></siteinfo>
+                    <siteurl>hitori.potaro.org</siteurl>
+                    <sitetag>
+                        <cat>WordPress</cat>
+                    </sitetag>
+                </explain>
+            </work>
+        </a>
+    </main>
+    <footer>&copy; 2020</footer>
+</body>
+
 </html>
